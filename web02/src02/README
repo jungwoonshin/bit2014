@@ -1,0 +1,8 @@
+1) 기존의 ContextLoaderListener와 CharacterEncodingFilter를
+스프링의 클래스로 변경함.
+
+2) web.xml 변경
+
+3) DispatcherServlet 변경
+
+4) 기존의 Listener와 Filter 클래스 삭제

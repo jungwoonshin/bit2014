@@ -1,0 +1,30 @@
+1) 패키지 구조 변경
+   . 유지 보수하기 좋게 컨트롤러와, DAO, VO 등을 분리함
+     . src/main/java/java56/controller, dao, vo 
+   . SQL 맵퍼 파일은 src/main/resources/java56/dao 폴더로 이동
+   . log4j.properties 파일은 src/main/resources 폴더로 이동
+   . application-context.xml 파일은 /WEB-INF 폴더로 이동
+     
+2) 자체 제작한 DispatcherServlet 대신 스프링 클래스 사용
+   . web.xml 변경 
+   . do-servlet.xml 생성 => 페이지 컨트롤러 준비
+   . application-context.xml은 DAO와 DataSource, 트랜잭션 객체 준비
+   . 기존 DispatcherServlet 클래스 삭제
+   
+
+3) 기존 페이지 컨트롤러를 스프링 규격에 맞추어 변경
+   . PageController 인터페이스 삭제
+   . 페이지 컨트롤러의 메서드 선언 앞에 @RequestMapping 애노테이션 붙임
+   . 메서드에서 요청 정보를 받기 위해 파라미터 변수를 선언함 -> @RequestParam 애노테이션으로 속성 조정 
+   . ScoreAdd 클래스의 경우 요청 정보를 받을 때 Score VO를 파라미터 
+     변수로 선언함.
+
+
+
+
+
+
+
+
+
+

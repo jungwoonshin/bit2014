@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 타입 별명 사용하기 + result map 사용하기 -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="java56.dao.StudentDao">
+	<!-- 컬럼과 VO 객체의 프로퍼티를 연결하는 정보 설정 => 개발자는 프로퍼티 이름과 일치시키기 위해 컬럼의 별명을 선언할 필요가 
+		없다. -->
+	<resultMap type="student" id="studentMap">
+		<id column="mno" property="no" />
+		<result column="name" property="name" />
+		<result column="pwd" property="password" />
+		<result column="email" property="email" />
+		<result column="tel" property="tel" />
+		<result column="valid" property="valid" />
+		<result column="postno" property="valid" />
+		<result column="bas_addr" property="baseAddress" />
+		<result column="det_addr" property="detailAddress" />
+		<result column="school" property="school" />
+		<result column="grade" property="grade" />
+		<result column="major" property="major" />
+		<result column="working" property="working" />
+		<result column="company" property="company" />
+		<result column="comp_code" property="companyNo" />
+	</resultMap>
+
+	<select id="exist" parameterType="map" resultMap="studentMap">
+		select s.mno, m.name, m.email, s.working
+		from students s left outer join members m using(mno)
+		where m.email=#{email} and m.pwd=#{password}
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

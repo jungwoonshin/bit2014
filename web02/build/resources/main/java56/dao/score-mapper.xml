@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 타입 별명 사용하기 + result map 사용하기 -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="servlets.step08.ScoreDao">
+  <!-- 컬럼과 VO 객체의 프로퍼티를 연결하는 정보 설정 
+  => 개발자는 프로퍼티 이름과 일치시키기 위해 컬럼의 별명을 선언할 필요가 없다.
+  -->
+  <resultMap type="score" id="scoreMap">
+    <id column="sno" property="no"/>
+    <result column="name" property="name"/>
+    <result column="kor" property="kor"/>
+    <result column="eng" property="eng"/>
+    <result column="math" property="math"/>
+    <result column="exec_date" property="execDate"/>
+  </resultMap>
+  
+  <!-- SQL문의 일부를 별도로 정의해 두고 필요할 때 포함시킨다. -->
+  <sql id="scoreSelect">
+    select sno, name, kor, eng, math, exec_date 
+    from scores 
+  </sql>
+  
+  <!--  
+  <select id="list" parameterType="map" resultType="score">
+  -->
+  <select id="list" parameterType="map" resultMap="scoreMap">
+    <include refid="scoreSelect"/>
+    order by 
+    <choose>
+      <when test="order == 'NM_A'">name asc</when>
+      <when test="order == 'NM_D'">name desc</when>
+      <when test="order == 'KO_A'">kor asc</when>
+      <when test="order == 'KO_D'">kor desc</when>
+      <when test="order == 'EN_A'">eng asc</when>
+      <when test="order == 'EN_D'">eng desc</when>
+      <when test="order == 'MA_A'">math asc</when>
+      <when test="order == 'MA_D'">math desc</when>
+      <otherwise>sno desc</otherwise>
+    </choose>
+    limit #{pageStartIndex}, #{pageSize}
+  </select>
+  
+  <!-- 사용자의 입력 값을 그대로 SQL에 포함 => 해킹할 가능성이 높다. => 안전하지 않은 코드 -->
+  <select id="list2" parameterType="map" resultMap="scoreMap">
+    <include refid="scoreSelect"/>
+    order by ${columnName} ${orderType}
+    limit #{pageStartIndex}, #{pageSize}
+  </select>
+  
+  <select id="countAll" resultType="int">
+    select count(sno) from scores 
+  </select>
+  
+  <select id="selectOne" parameterType="int" resultMap="scoreMap">
+    <include refid="scoreSelect"/>
+    where sno=#{value} 
+  </select>
+  
+  <insert id="insert" parameterType="score"
+      useGeneratedKeys="true" keyColumn="sno" keyProperty="no">
+    insert into scores (name, kor, eng, math, exec_date)
+    values(#{name}, #{kor}, #{eng}, #{math}, #{execDate})
+  </insert>
+  
+  <delete id="delete" parameterType="int">
+    delete from scores where sno=#{okok}
+  </delete>
+  
+  <update id="update" parameterType="score">
+    update scores set 
+      name=#{name}, 
+      kor=#{kor}, 
+      eng=#{eng}, 
+      math=#{math},
+      exec_date=#{execDate} 
+    where sno=#{no}
+  </update>    
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
